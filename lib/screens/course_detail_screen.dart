@@ -5,6 +5,8 @@ import 'package:education_app/widgets/list_of_lesson.dart';
 import 'package:education_app/widgets/my_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:education_app/Models/course.dart';
+import 'package:education_app/screens/quiz_screen.dart';
+import 'package:education_app/Models/quiz_question.dart';
 
 class CourseDetailScreen extends StatefulWidget {
   final Course course;
@@ -32,7 +34,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     height: 40,
                     width: 40,
                     onTap: () => Navigator.pop(context),
-                    child: Icon(Icons.arrow_back),
+                    child: const Icon(Icons.arrow_back),
                   ),
                   const Spacer(),
                   const Text(
@@ -64,7 +66,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               ),
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.star_border_outlined,
                     color: Colors.black45,
                   ),
@@ -84,7 +86,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                       color: Colors.black45,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     " \Rs.5000",
                     style: TextStyle(
@@ -96,7 +98,6 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                 ],
               ),
               const SizedBox(height: 15),
-              //for tab view
               MyTabView(
                   changeTab: (int index) {
                     setState(() {
@@ -104,7 +105,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     });
                   },
                   index: selectedIndex),
-              selectedIndex == 0 ? const PlayList() : Description()
+              selectedIndex == 0 ? const PlayList() : const Description()
             ],
           ),
         ),
@@ -133,11 +134,17 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     Expanded(
                       child: CustomIconButton(
                         height: 45,
+                        width: double.infinity,
                         color: primaryColor,
-                        width: 45,
-                        onTap: () {},
-                        child: Text(
-                          "Enroll Now",
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                QuizScreen(courseName: widget.course.name),
+                          ),
+                        ),
+                        child: const Text(
+                          "Start Quiz",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -226,14 +233,14 @@ class _MyTabViewState extends State<MyTabView> {
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
       width: double.infinity,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.grey.shade200,
-      ),
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.grey.shade200),
       child: Row(
         children: myList
             .asMap()
